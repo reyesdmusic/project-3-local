@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { Navbar, Nav, Container, Modal, Tab, NavDropdown } from 'react-bootstrap';
 import UploadPhoto from './UploadPhoto';
+import ProfilePic from './ProfilePic/ProfilePic';
 
 import UserInfoContext from '../utils/UserInfoContext';
 import AuthService from '../utils/auth';
@@ -12,7 +13,7 @@ function AppNavbar() {
   // set modal display state
   const [showModal, setShowModal] = useState(false);
   // get username out of context object to display in nav
-  const { username } = useContext(UserInfoContext);
+  const { username, picture } = useContext(UserInfoContext);
 
   
   return (
@@ -37,7 +38,12 @@ function AppNavbar() {
               <NavDropdown.Item href="/saved_music">My Music</NavDropdown.Item>
               </NavDropdown>
 
-              <NavDropdown alignRight title={username} >
+              <NavDropdown alignRight title={
+                <ProfilePic 
+                  picture={picture}
+                  username={username}
+                />
+              } >
 
               <NavDropdown.Item onClick={() => setShowModal(true)}>Upload Profile Pic</NavDropdown.Item>
   
