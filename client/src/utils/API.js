@@ -26,6 +26,7 @@ export const loginUser = function (userData) {
 export const saveBook = function (bookData, token) {
   return axios.put('/api/users/books', bookData, { headers: { authorization: `Bearer ${token}` } });
 };
+
 // remove saved book data for a logged in user
 export const deleteBook = function (bookId, token) {
   return axios.delete(`/api/users/books/${bookId}`, { headers: { authorization: `Bearer ${token}` } });
@@ -37,6 +38,30 @@ export const searchGoogleBooks = function (query) {
   return axios.get('https://www.googleapis.com/books/v1/volumes', { params: { q: query } });
 };
 
+export const searchVideoGames = function (title, platform) {
+  return axios({
+    "method":"GET",
+    "url":`https://chicken-coop.p.rapidapi.com/games/${title}`,
+    "headers":{
+    "content-type":"application/octet-stream",
+    "x-rapidapi-host":"chicken-coop.p.rapidapi.com",
+    "x-rapidapi-key":"ad79893db0msh519507ce219a2cep1942b9jsn16290fa29320",
+    "useQueryString":true
+    },"params":{
+    "platform": platform
+    }
+    })
+};
+
+// save games
+export const saveGame = function (gameData, token) {
+  return axios.put('/api/users/games', gameData, { headers: { authorization: `Bearer ${token}` } });
+};
+
+// delete games
+export const deleteGame = function (gameId, token) {
+  return axios.delete(`/api/users/games/${gameId}`, { headers: { authorization: `Bearer ${token}` } });
+};
 export const searchMusic = function(query) {
     return axios({
       "method":"GET",
@@ -64,4 +89,27 @@ export const savePicture = function (pictureData, token) {
 
 export const deleteMusic = function (musicId, token) {
   return axios.delete(`/api/users/music/${musicId}`, { headers: { authorization: `Bearer ${token}` } });
+};
+
+export const searchOMDB = function (query) {
+  console.log(query);
+  return axios.get(`http://www.omdbapi.com/?apikey=671512a8&s=${query}`, { params: { q: query } });
+};
+
+export const searchEachMovie = function (query) {
+  console.log(query);
+  return axios.get(`http://www.omdbapi.com/?apikey=671512a8&i=${query}`, { params: { q: query } });
+};
+
+export const saveMovie = function (movieData, token) {
+  return axios.put('/api/users/movies', movieData, { headers: { authorization: `Bearer ${token}` } });
+};
+
+export const deleteMovie = function (movieId, token) {
+  return axios.delete(`/api/users/movies/${movieId}`, { headers: { authorization: `Bearer ${token}` } });
+};
+
+// save friend data for a logged in user
+export const saveFriend = function (userData, token) {
+  return axios.put('/api/users/friends', userData, { headers: { authorization: `Bearer ${token}` } });
 };

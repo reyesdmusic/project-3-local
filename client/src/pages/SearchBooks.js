@@ -52,13 +52,7 @@ function SearchBooks() {
 
     // send the books data to our api
     saveBook(bookToSave, token)
-      .then(() => 
-      
-      {userData.getUserData()
-      console.log(userData.savedBooks)
-      }
-      
-      )
+      .then(() => userData.getUserData())
       .catch((err) => console.log(err));
   };
 
@@ -104,8 +98,7 @@ function SearchBooks() {
                     <Button
                       disabled={userData.savedBooks?.some((savedBook) => savedBook.bookId === book.bookId)}
                       className='btn-block btn-info'
-                      onClick={() => {
-                        handleSaveBook(book.bookId)}}>
+                      onClick={() => handleSaveBook(book.bookId)}>
                       {userData.savedBooks?.some((savedBook) => savedBook.bookId === book.bookId)
                         ? 'This book has already been saved!'
                         : 'Save this Book!'}
