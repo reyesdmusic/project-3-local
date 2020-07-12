@@ -10,7 +10,10 @@ import * as API from '../utils/API';
 function Home() {
 
     const [friendsArray, setFriendsArray] = useState([]);
-    const [allFriendsMediaArray, setAllFriendsMediaArray] = useState([]);
+    const [allFriendsMediaState, setAllFriendsMediaState] = useState([]);
+
+    let allFriendsMediaArray = [];
+    
     
     // get whole userData state object from App.js
     const userData = useContext(UserInfoContext);
@@ -33,16 +36,61 @@ function Home() {
                 // const newFriendsArray = friendsArray;
                 // newFriendsArray.push(result.data)
                 setFriendsArray(friendsArray => [...friendsArray, result.data])
+
+                // allFriendsMediaArray.push(result.data)
+                
+
+              console.log(result.data.savedBooks)
+
+              if (result.data.savedBooks.length > 0) {
+
+                result.data.savedBooks.map(savedBook => {
+                  
+                  allFriendsMediaArray.push(savedBook)
+
                 })
+                
+
+                console.log("hey here's a whole savedBooks array: ", result.data.savedBooks)
+              }
+              })
+               
         });
 
+        
+        console.log("this is all friends media array after the push: ", allFriendsMediaArray)
 
-        friendsArray.map(friend => {
-          friend.savedMusic ?
-          (friend.savedMusic.map(savedMusic =>
+        // friendsArray.map(friend => {
+        //   friend.savedMusic ?
+        //   (friend.savedMusic.map(savedMusic =>
 
-          setAllFriendsMediaArray(allFriendsMediaArray => [...allFriendsMediaArray, savedMusic]))) : null
-          })
+        //   setAllFriendsMediaArray(allFriendsMediaArray => [...allFriendsMediaArray, savedMusic]))) : null
+        //   })
+
+
+        //   friendsArray.map(friend => {
+        //     friend.savedMovies ?
+        //     (friend.savedMovies.map(savedMovie =>
+  
+        //     setAllFriendsMediaArray(allFriendsMediaArray => [...allFriendsMediaArray, savedMovie]))) : null
+        //     })
+
+        //     friendsArray.map(friend => {
+        //       friend.savedGames ?
+        //       (friend.savedGames.map(savedGame =>
+    
+        //       setAllFriendsMediaArray(allFriendsMediaArray => [...allFriendsMediaArray, savedGame]))) : null
+        //       })
+
+        //       friendsArray.map(friend => {
+        //         friend.savedBooks ?
+        //         (friend.savedBooks.map(savedBook =>
+      
+        //         setAllFriendsMediaArray(allFriendsMediaArray => [...allFriendsMediaArray, savedBook]))) : null
+        //         })
+
+
+        //         console.log("this is all your friend's saved media: " + allFriendsMediaArray)
     }, [userData, userData.friends]);
 
 
@@ -70,7 +118,7 @@ function Home() {
             <Jumbotron fluid className='text-light bg-dark'>
 
                 <Container>
-                    <h1>Viewing friends!</h1>
+                    <h1>Viewing friends Media!</h1>
                 </Container>
 
             </Jumbotron>
