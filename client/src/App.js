@@ -14,7 +14,7 @@ import SavedFriends from './pages/SavedFriends';
 import Navbar from './components/Navbar';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
-import Home from './pages/Home';
+import Home from './pages/Home/Home';
 
 import * as API from './utils/API';
 import AuthService from './utils/auth';
@@ -64,6 +64,7 @@ function App() {
       <>
         {/* wrap our entire app in context provider and provide userInfo state as value */}
         <UserInfoContext.Provider value={userInfo}>
+       
           <Navbar />
           <Switch>
             <Route exact path='/' component={Login} />

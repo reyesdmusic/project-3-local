@@ -25,6 +25,8 @@ function SearchBooks() {
       .then(({ data }) => {
         const bookData = data.items.map((book) => ({
           bookId: book.id,
+          timeStamp: Date.now(),
+          createdAt: Date(), 
           authors: book.volumeInfo.authors || ['No author to display'],
           title: book.volumeInfo.title,
           description: book.volumeInfo.description,
@@ -57,6 +59,9 @@ function SearchBooks() {
   };
 
   return (
+
+    
+
     <>
       <Jumbotron fluid className='text-light bg-dark'>
         <Container>
@@ -111,6 +116,8 @@ function SearchBooks() {
         </CardColumns>
       </Container>
     </>
+
+
   );
 }
 

@@ -27,6 +27,8 @@ function SearchGames() {
         const gameData = [{
           gameId: `${data.result.title}-${data.result.developer}-${searchPlatform}`,
           developer: data.result.developer || ['No developer to display'],
+          timeStamp: Date.now(),
+          createdAt: Date(), 
           title: data.result.title,
           description: data.result.description,
           image: data.result.image || '',

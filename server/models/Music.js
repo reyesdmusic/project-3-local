@@ -14,6 +14,18 @@ const musicSchema = new Schema({
   musicId: {
     type: String,
     required: true,
+  }, 
+  timeStamp: {
+    type: Number,
+    required: true,
+  },
+  createdAt: {
+    type: String,
+  },
+  likes: {
+    type: Number,
+    required: true,
+    default: 0
   },
   image: {
     type: String,
@@ -26,5 +38,7 @@ const musicSchema = new Schema({
     required: true,
   },
 });
+
+
 
 module.exports = musicSchema;
