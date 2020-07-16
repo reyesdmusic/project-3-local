@@ -8,8 +8,12 @@ import { saveBook, searchGoogleBooks } from '../../utils/API';
 
 function Login() {
   
+  const userData = useContext(UserInfoContext);
 
   return (
+
+    userData.username ? window.location.assign('/home') :
+
     <>
       <Container>
       <LoginForm />
