@@ -14,7 +14,7 @@ import SavedFriends from './pages/SavedFriends';
 import Navbar from './components/Navbar';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
-import Home from './pages/Home/Home';
+import Home from './pages/Home';
 
 import * as API from './utils/API';
 import AuthService from './utils/auth';
@@ -25,6 +25,7 @@ import UserInfoContext from './utils/UserInfoContext';
 function App() {
   // set data to be used for UserInfoContext and make it available to all other components
   const [userInfo, setUserInfo] = useState({
+    _id: '',
     username: '',
     email: '',
     picture: '',
@@ -32,6 +33,7 @@ function App() {
     savedMusic: [],
     savedMovies: [],
     savedGames: [],
+    savedLikes: [],
     bookCount: 0,
     musicCount: 0,
     movieCount: 0,
@@ -47,8 +49,8 @@ function App() {
         return false;
       }
       API.getMe(token)
-        .then(({ data: { username, email, picture, savedBooks, savedMusic, savedMovies, savedGames, bookCount, musicCount, movieCount, gameCount, friends } }) =>
-          setUserInfo({ ...userInfo, username, email, picture, savedBooks, savedMusic, savedMovies, savedGames, bookCount, musicCount, movieCount, gameCount, friends })
+        .then(({ data: { _id, username, email, picture, savedBooks, savedMusic, savedMovies, savedGames, savedLikes, bookCount, musicCount, movieCount, gameCount, friends } }) =>
+          setUserInfo({ ...userInfo, _id, username, email, picture, savedBooks, savedMusic, savedMovies, savedGames, savedLikes, bookCount, musicCount, movieCount, gameCount, friends })
         )
         .catch((err) => console.log(err));
     }
@@ -64,7 +66,6 @@ function App() {
       <>
         {/* wrap our entire app in context provider and provide userInfo state as value */}
         <UserInfoContext.Provider value={userInfo}>
-       
           <Navbar />
           <Switch>
             <Route exact path='/' component={Login} />
