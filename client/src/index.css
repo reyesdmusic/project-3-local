@@ -9,21 +9,20 @@ div[data-reactroot] {
 }
 
 
-
+html,
+#root,
 body {
-  font-family: 'Rubik', sans-serif;
-  background: linear-gradient(412.9deg, rgba(255,255,255,1) 0%, rgba(244,244,244,1) 82.68%, rgba(235,235,235,1) 100%);
+  font-family: 'Montserrat', sans-serif;
+  
+  background: linear-gradient(412.9deg, rgba(255,255,255,1) 0%, rgb(253, 253, 253) 82.68%, rgba(235,235,235,1) 100%);
+  height: 100%;
+  width: 100% auto;
+  padding: 0;
+  margin: 0;
  
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-family: 'Rubik Mono One', sans-serif;
-}
+
 
 .small {
   font-weight: 300;

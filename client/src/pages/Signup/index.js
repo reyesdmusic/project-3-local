@@ -1,8 +1,9 @@
 import React, { useContext } from 'react';
-import { Container } from 'react-bootstrap';
+import { Container, Row, Col } from 'react-bootstrap';
 import SignupForm from '../../components/SignupForm';
 import { Link } from "react-router-dom";
 import UserInfoContext from '../../utils/UserInfoContext';
+import "./style.css";
 
 function Signup() {
   
@@ -12,14 +13,21 @@ function Signup() {
 
     userData.username ? window.location.assign('/home') :
     
-    <>
+  
+      <Row className="justify-content-center">
+      <Col xs={12} md={6} >
       <Container>
+      <div className="signup-card">
       <SignupForm />
-      </Container>
+      <div className="login-link">
       <Link as={Link} to='/'>
-        Login
+        LOGIN
       </Link>
-    </>
+      </div>
+      </div>
+      </Container>
+      </Col>
+      </Row>
   );
 }
 
