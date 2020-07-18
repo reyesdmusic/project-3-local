@@ -1,6 +1,9 @@
-import React, { useState, useContext } from 'react';
-import { Jumbotron, Container, Row, Col, Form, Button, Card, CardColumns } from 'react-bootstrap';
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { Col, Form, Button, Card, CardColumns } from 'react-bootstrap';
 import ReactAudioPlayer from 'react-audio-player';
+import { FaVideo } from 'react-icons/fa';
+import RateReviewForSearched from '../RateReviewForSearched';
 import './style.css';
 
 function SearchCards(props) {
@@ -16,25 +19,30 @@ function SearchCards(props) {
                     {props.resultArray.map((book) => {
                         return (
 
-                            <Card key={book.bookId} border='dark'>
-                                {book.image ? <Card.Img className='mediaImage' src={book.image} alt={`The cover for ${book.title}`} variant='top' /> : null}
+                            <Card key={book.mediaId} border='dark'>
+                                <div className='center-wrap'>
+                                    {book.image ? <Card.Img className='mediaImage' src={book.image} alt={`The cover for ${book.title}`} variant='top' /> : null}
+                                </div>
                                 <Card.Body>
-                                    <Card.Title>{book.title}</Card.Title>
-                                    <p className='small'>Authors: {book.authors}</p>
+                                    <div className='center-wrap'>
+                                        <Card.Title>
+                                            <b>{book.title.toUpperCase()}</b>
+                                            <p className='by'>{book.authors.length > 1 ? 'Authors' : 'Author'}: {book.authors}</p>
+                                        </Card.Title>
+                                    </div>
                                     <Card.Text>{book.description}</Card.Text>
-                                    {props.username && (
-                                        <Button
-                                            disabled={props.savedArray?.some((savedBook) => savedBook.bookId === book.bookId)}
-                                            className='btn-block btn-info'
-                                            onClick={() => props.handleBtnClick(book.bookId)}>
-                                            {props.savedArray?.some((savedBook) => savedBook.bookId === book.bookId)
-                                                ? 'This book has already been saved!'
-                                                : 'Save this Book!'}
-                                        </Button>
-                                    )}
+                                    <RateReviewForSearched
+                                        username={props.username}
+                                        savedArray={props.savedArray}
+                                        mediatype={'book'}
+                                        mediaType={'Books'}
+                                        mediaTypeSg={'Book'}
+                                        media={book}
+                                        cb={props.cb}
+                                        link={'/saved_books'}
+                                    />
                                 </Card.Body>
                             </Card>
-
                         );
                     })}
                 </CardColumns>
@@ -43,38 +51,42 @@ function SearchCards(props) {
     } else if (props.cardType === 'searchedMusic') {
         return (
             <>
-                <h2>{props.resultArray.length
-                    ? `Viewing ${props.resultArray.length} ${props.resultArray.length === 1 ? 'result' : 'results'}:`
-                    : 'Search for music to begin'}</h2>
+                <h2>
+                    {props.resultArray.length
+                        ? `Viewing ${props.resultArray.length} ${props.resultArray.length === 1 ? 'result' : 'results'}:`
+                        : 'Search for music to begin'}
+                </h2>
                 <CardColumns>
                     {props.resultArray.map((music) => {
                         return (
 
-                            <Card key={music.musicId} border='dark'>
-                                {music.image ? <Card.Img className='mediaImage' src={music.image} alt={`The cover for ${music.title}`} variant='top' /> : null}
+                            <Card key={music.mediaId} border='dark'>
+                                <div className='center-wrap'>
+                                    {music.image ? <Card.Img className='mediaImage' src={music.image} alt={`The cover for ${music.title}`} variant='top' /> : null}
+                                </div>
                                 <Card.Body>
-                                    <Card.Title>{music.title}</Card.Title>
-                                    <p className='small'>Artist: {music.artist}</p>
-                                    {/* <Card.Text>Link: {music.link}</Card.Text> */}
-                                    <ReactAudioPlayer
-                                        src={music.preview}
-                                        controls
+                                    <div className='center-wrap'>
+                                        <Card.Title>
+                                            <b>{music.title.toUpperCase()}</b>
+                                            <p className='by'>Artist: {music.artist}</p>
+                                        </Card.Title>
+                                        <ReactAudioPlayer
+                                            src={music.preview}
+                                            controls
+                                        />
+                                    </div>
+                                    <RateReviewForSearched
+                                        username={props.username}
+                                        savedArray={props.savedArray}
+                                        mediatype={'music'}
+                                        mediaType={'Music'}
+                                        mediaTypeSg={'Music'}
+                                        media={music}
+                                        cb={props.cb}
+                                        link={'/saved_music'}
                                     />
-                                    {props.username && (
-                                        <Button
-                                            disabled={props.savedArray?.some((savedMusic) => savedMusic.musicId == music.musicId)}
-                                            className='btn-block btn-info'
-                                            onClick={() => {
-                                                props.handleSaveMusic(music.musicId)
-                                            }}>
-                                            {props.savedArray?.some((savedMusic) => savedMusic.musicId == music.musicId)
-                                                ? 'This has already been saved!'
-                                                : 'Save!'}
-                                        </Button>
-                                    )}
                                 </Card.Body>
                             </Card>
-
                         );
                     })}
                 </CardColumns>
@@ -88,33 +100,38 @@ function SearchCards(props) {
                     : 'Search for a movie to begin'}
                 </h2>
                 <CardColumns>
-                    {props.resultArray.map((movie) => {
+                    {props.resultArray.map((media) => {
                         return (
 
-                            <Card key={movie.movieId} border='dark'>
-                                {movie.image ? <Card.Img className='mediaImage' src={movie.image} alt={`The cover for ${movie.title}`} variant='top' /> : null}
+                            <Card key={media.mediaId} border='dark'>
+                                <div className='center-wrap'>
+                                    {media.image === 'N/A' ? null : <Card.Img className='mediaImage' src={media.image} alt={`The cover for ${media.title}`} variant='top' />}
+                                </div>
                                 <Card.Body>
-                                    <Card.Title>{movie.title}</Card.Title>
-                                    <p className='small'>Released: {movie.released}</p>
-                                    <p className='small'>Actors: {movie.actors}</p>
-                                    <p className='small'>Director: {movie.director}</p>
-                                    <p className='small'>Genre: {movie.genre}</p>
-                                    <p className='small'>Plot: {movie.plot}</p>
-                                    <p className='small'>Rated: {movie.rated}</p>
-                                    <p className='small'>Runtime: {movie.runtime}</p>
-                                    {props.username && (
-                                        <Button
-                                            disabled={props.savedArray?.some((savedMovie) => savedMovie.movieId === movie.movieId)}
-                                            className='btn-block btn-info'
-                                            onClick={() => props.handleBtnClick(movie.movieId)}>
-                                            {props.savedArray?.some((savedMovie) => savedMovie.movieId === movie.movieId)
-                                                ? 'This movie has already been saved!'
-                                                : 'Save this Movie!'}
-                                        </Button>
-                                    )}
+                                    <div className='center-wrap'>
+                                        <Card.Title>
+                                            <b>{media.title.toUpperCase()}</b>
+                                            {media.director === 'N/A' ? null : <p className='by'>Director: {media.director}</p>}
+                                        </Card.Title>
+                                    </div>
+                                    {media.plot === 'N/A' ? null : <Card.Text> {media.plot}</Card.Text>}
+                                    {media.actors === 'N/A' ? null : <p className='small closer-p'><b>Starring:</b> {media.actors}</p>}
+                                    {media.released === 'N/A' ? null : <p className='small closer-p'><b>Released:</b> {media.released}</p>}
+                                    {media.genre === 'N/A' ? null : <p className='small closer-p'><b>Genre:</b> {media.genre}</p>}
+                                    {media.rated === 'N/A' ? null : <p className='small closer-p'><b>Rated:</b> {media.rated}</p>}
+                                    {media.runtime === 'N/A' ? null : <p className='small'><b>Runtime:</b> {media.runtime}</p>}
+                                    <RateReviewForSearched
+                                        username={props.username}
+                                        savedArray={props.savedArray}
+                                        mediatype={'movie'}
+                                        mediaType={'Movies'}
+                                        mediaTypeSg={'Movie'}
+                                        media={media}
+                                        cb={props.cb}
+                                        link={'/saved_movies'}
+                                    />
                                 </Card.Body>
                             </Card>
-
                         );
                     })}
                 </CardColumns>
@@ -130,25 +147,30 @@ function SearchCards(props) {
                     {props.resultArray.map((game) => {
                         return (
 
-                            <Card key={game.gameId} border='dark'>
-                                {game.image ? <Card.Img className='mediaImage' src={game.image} alt={`The cover for ${game.title}`} variant='top' /> : null}
+                            <Card key={game.mediaId} border='dark'>
+                                <div className='center-wrap'>
+                                    {game.image ? <Card.Img className='mediaImage' src={game.image} alt={`The cover for ${game.title}`} variant='top' /> : null}
+                                </div>
                                 <Card.Body >
-                                    <Card.Title>{game.title}</Card.Title>
-                                    <p className='small'>Developer: {game.developer}</p>
+                                    <div className='center-wrap'>
+                                        <Card.Title>
+                                            <b>{game.title.toUpperCase()}</b>
+                                            <p className='by'>Developer: {game.developer}</p>
+                                        </Card.Title>
+                                    </div>
                                     <Card.Text>{game.description}</Card.Text>
-                                    {props.username && (
-                                        <Button
-                                            disabled={props.savedArray?.some((savedGame) => savedGame.gameId === game.gameId)}
-                                            className='btn-block btn-info'
-                                            onClick={() => props.handleSaveGame()}>
-                                            {props.savedArray?.some((savedGame) => savedGame.gameId === game.gameId)
-                                                ? 'This game has already been saved!'
-                                                : 'Save this game!'}
-                                        </Button>
-                                    )}
+                                    <RateReviewForSearched
+                                        username={props.username}
+                                        savedArray={props.savedArray}
+                                        mediatype={'game'}
+                                        mediaType={'Games'}
+                                        mediaTypeSg={'Game'}
+                                        media={game}
+                                        cb={props.cb}
+                                        link={'/saved_games'}
+                                    />
                                 </Card.Body>
                             </Card>
-
                         );
                     })}
                 </CardColumns>
@@ -160,23 +182,26 @@ function SearchCards(props) {
                 <CardColumns>
 
                     <Card key={props.searchedUser._id} border='dark'>
-                        <Card.Img className='mediaImage' src={props.searchedUser.picture} alt={` ${props.searchedUser.username}`} variant='top' />
-                        <Card.Body>
-                            <Card.Title>{props.searchedUser.username}</Card.Title>
-                            <p className='small'>Username: {props.searchedUser.username}</p>
-                            <Card.Text>{props.searchedUser.username}</Card.Text>
-                            {props.savedArray?.every((friend) => friend._id !== props.searchedUser._id)
-                                ? <Button
-                                    className='btn-block btn-info save-friend'
-                                    onClick={() => props.handleSaveFriend()}>
-                                    Save Friend
+                        <div className='center-wrap'>
+                            <Card.Img className='mediaImage' src={props.searchedUser.picture} alt={` ${props.searchedUser.username}`} variant='top' />
+                            <Card.Body>
+                                <Card.Title>
+                                    <b>{props.searchedUser.username.toUpperCase()}</b>
+                                    <p className='by'><b>email:</b> {props.searchedUser.email}</p>
+                                </Card.Title>
+                                {props.savedArray?.every((friend) => friend._id !== props.searchedUser._id)
+                                    ? <Button
+                                        className='btn-block btn-info save-friend'
+                                        onClick={() => props.handleSaveFriend()}>
+                                        Save Friend
                                 </Button>
-                                : <Button
-                                    className='btn-block btn-info save-friend'
-                                    onClick={() => props.handleDeleteFriend(props.searchedUser._id)}>
-                                    Remove Friend
+                                    : <Button
+                                        className='btn-block btn-info save-friend'
+                                        onClick={() => props.handleDeleteFriend(props.searchedUser._id)}>
+                                        Remove Friend
                                 </Button>}
-                        </Card.Body>
+                            </Card.Body>
+                        </div>
                     </Card>
 
                 </CardColumns>

@@ -1,7 +1,9 @@
 import React from 'react';
-import { Jumbotron, Container, CardColumns, Card, Button, Form, Col } from 'react-bootstrap';
-import { FaVideo } from 'react-icons/fa';
-import ReactAudioPlayer from 'react-audio-player';
+import { CardColumns, Card, Button } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faVideo, faBookOpen, faGamepad, faMusic } from '@fortawesome/free-solid-svg-icons'; import ReactAudioPlayer from 'react-audio-player';
+import RateSaved from '../RateSaved';
+import ReviewSaved from '../ReviewSaved';
 import './style.css';
 
 function SavedCards(props) {
@@ -19,17 +21,65 @@ function SavedCards(props) {
                         return (
 
                             <Card key={book._id} border='dark'>
-                                {book.image ? <Card.Img className='mediaImage' src={book.image} alt={`The cover for ${book.title}`} variant='top' /> : null}
+                                <div className='center-wrap'>
+                                    {book.image ? <Card.Img className='mediaImage' src={book.image} alt={`The cover for ${book.title}`} variant='top' /> : null}
+                                </div>
                                 <Card.Body>
-                                    <Card.Title>{book.title}</Card.Title>
-                                    <p className='small'>Authors: {book.authors}</p>
+                                    <div className='center-wrap'>
+                                        <Card.Title>
+                                            <b>{book.title.toUpperCase()}</b>
+                                            <p className='by'>{book.authors.length > 1 ? 'Authors' : 'Author'}: {book.authors}</p>
+                                        </Card.Title>
+                                    </div>
                                     <Card.Text>{book.description}</Card.Text>
+                                    <div className='center-wrap'>
+                                        <p className='ratingReviewHeading'>Your Rating</p>
+                                        <p className='rating'>
+                                            {[...Array(book.userRating)].map((star, i) => {
+                                                return (
+                                                    <label key={i}>
+                                                        <FontAwesomeIcon className='read-only-star' icon={faBookOpen} color='black' size={'lg'} />
+                                                    </label>
+                                                )
+                                            })}
+                                        </p>
+                                        <p className='ratingReviewHeading'>Your Review</p>
+                                    </div>
+                                    <p>{book.userReview.length ? book.userReview : "What's good...and what's not? Write a review!"}</p>
+                                    <RateSaved
+                                        username={props.username}
+                                        mediaType={'Book'}
+                                        media={book}
+                                        startRating={props.startRating}
+                                        selectedMediaRating={props.selectedMediaRating}
+                                        handleRatingFormSubmit={props.handleRatingFormSubmit}
+                                        setUserRating={props.setUserRating}
+                                        userRating={props.userRating}
+                                        setHover={props.setHover}
+                                        hover={props.hover}
+                                    />
+                                    <ReviewSaved
+                                        username={props.username}
+                                        mediaType={'Book'}
+                                        media={book}
+                                        startReview={props.startReview}
+                                        selectedMediaReview={props.selectedMediaReview}
+                                        handleReviewFormSubmit={props.handleReviewFormSubmit}
+                                        setReviewInput={props.setReviewInput}
+                                    />
+
+                                    {book.comments && (<p>Comments:</p>)}
+                                    {book.comments.map(comment => {
+                                        return (
+                                            <p>{comment.commenterUsername}:{comment.content}</p>
+                                        )
+                                    })}
+
                                     <Button className='btn-block btn-danger' onClick={() => props.handleDeleteBook(book._id)}>
                                         Delete this Book!
                                     </Button>
                                 </Card.Body>
                             </Card>
-
                         );
                     })}
                 </CardColumns>
@@ -48,20 +98,67 @@ function SavedCards(props) {
                         return (
 
                             <Card key={music._id} border='dark'>
-                                {music.image ? <Card.Img className='mediaImage' src={music.image} alt={`The cover for ${music.title}`} variant='top' /> : null}
+                                <div className='center-wrap'>
+                                    {music.image ? <Card.Img className='mediaImage' src={music.image} alt={`The cover for ${music.title}`} variant='top' /> : null}
+                                </div>
                                 <Card.Body>
-                                    <Card.Title>{music.title}</Card.Title>
-                                    <p className='small'>Artist: {music.artist}</p>
-                                    <ReactAudioPlayer
-                                        src={music.preview}
-                                        controls
+                                    <div className='center-wrap'>
+                                        <Card.Title>
+                                            <b>{music.title.toUpperCase()}</b>
+                                            <p className='by'>Artist: {music.artist}</p>
+                                        </Card.Title>
+                                        <ReactAudioPlayer
+                                            className='audio-player'
+                                            src={music.preview}
+                                            controls
+                                        />
+                                        <p className='ratingReviewHeading'>Your Rating</p>
+                                        <p className='rating'>{[...Array(music.userRating)].map((star, i) => {
+                                            return (
+                                                <label key={i}>
+                                                    <FontAwesomeIcon className='read-only-star' icon={faMusic} color='black' size={'lg'} />
+                                                </label>
+                                            )
+                                        })}
+                                        </p>
+                                        <p className='ratingReviewHeading'>Your Review</p>
+                                    </div>
+                                    <p>{music.userReview.length ? music.userReview : "What's good...and what's not? Write a review!"}</p>
+                                    <RateSaved
+                                        username={props.username}
+                                        mediaType={'Music'}
+                                        media={music}
+                                        startRating={props.startRating}
+                                        selectedMediaRating={props.selectedMediaRating}
+                                        handleRatingFormSubmit={props.handleRatingFormSubmit}
+                                        setUserRating={props.setUserRating}
+                                        userRating={props.userRating}
+                                        setHover={props.setHover}
+                                        hover={props.hover}
                                     />
+
+                                    <ReviewSaved
+                                        username={props.username}
+                                        mediaType={'Music'}
+                                        media={music}
+                                        startReview={props.startReview}
+                                        selectedMediaReview={props.selectedMediaReview}
+                                        handleReviewFormSubmit={props.handleReviewFormSubmit}
+                                        setReviewInput={props.setReviewInput}
+                                    />
+
+                                    {music.comments && (<p>Comments:</p>)}
+                                    {music.comments.map(comment => {
+                                        return (
+                                            <p>{comment.commenterUsername}:{comment.content}</p>
+                                        )
+                                    })}
+                                    
                                     <Button className='btn-block btn-danger' onClick={() => props.handleDeleteMusic(music._id)}>
                                         Delete!
                                     </Button>
                                 </Card.Body>
                             </Card>
-
                         );
                     })}
                 </CardColumns>
@@ -79,26 +176,72 @@ function SavedCards(props) {
                         : 'You have no saved movies!'}
                 </h2>
                 <CardColumns>
-                    {props.savedArray.map((movie) => {
+                    {props.savedArray.map((media) => {
                         return (
-
-                            <Card key={movie._id} border='dark'>
-                                {movie.image ? <Card.Img className='mediaImage' src={movie.image} alt={`The cover for ${movie.title}`} variant='top' /> : null}
+                            <Card key={media.mediaId} border='dark'>
+                                <div className='center-wrap'>
+                                    {media.image === 'N/A' ? null : <Card.Img className='mediaImage' src={media.image} alt={`The cover for ${media.title}`} variant='top' />}
+                                </div>
                                 <Card.Body>
-                                    <Card.Title>{movie.title}</Card.Title>
-                                    <p className='small'>Released: {movie.released}</p>
-                                    <p className='small'>Actors: {movie.actors}</p>
-                                    <p className='small'>Director: {movie.director}</p>
-                                    <p className='small'>Genre: {movie.genre}</p>
-                                    <p className='small'>Plot: {movie.plot}</p>
-                                    <p className='small'>Rated: {movie.rated}</p>
-                                    <p className='small'>Runtime: {movie.runtime}</p>
-                                    <Button className='btn-block btn-danger' onClick={() => props.handleDeleteMovie(movie._id)}>
+                                    <div className='center-wrap'>
+                                        <Card.Title>
+                                            <b>{media.title.toUpperCase()}</b>
+                                            {media.director === 'N/A' ? null : <p className='by'>Director: {media.director}</p>}
+                                        </Card.Title>
+                                    </div>
+                                    {media.plot === 'N/A' ? null : <Card.Text> {media.plot}</Card.Text>}
+                                    {media.actors === 'N/A' ? null : <p className='small closer-p'><b>Starring:</b> {media.actors}</p>}
+                                    {media.released === 'N/A' ? null : <p className='small closer-p'><b>Released:</b> {media.released}</p>}
+                                    {media.genre === 'N/A' ? null : <p className='small closer-p'><b>Genre:</b> {media.genre}</p>}
+                                    {media.rated === 'N/A' ? null : <p className='small closer-p'><b>Rated:</b> {media.rated}</p>}
+                                    {media.runtime === 'N/A' ? null : <p className='small'><b>Runtime:</b> {media.runtime}</p>}
+                                    <div className='center-wrap'>
+                                        <p className='ratingReviewHeading'>Your Rating</p>
+                                        <p className='rating'>{[...Array(media.userRating)].map((star, i) => {
+                                            return (
+                                                <label key={i}>
+                                                    <FontAwesomeIcon className='read-only-star' icon={faVideo} color='black' size={'lg'} />
+                                                </label>
+                                            )
+                                        })}
+                                        </p>
+                                        <p className='ratingReviewHeading'>Your Review</p>
+                                    </div>
+                                    <p>{media.userReview.length ? media.userReview : "What's good...and what's not? Write a review!"}</p>
+                                    <RateSaved
+                                        username={props.username}
+                                        mediaType={'Movie'}
+                                        media={media}
+                                        startRating={props.startRating}
+                                        selectedMediaRating={props.selectedMediaRating}
+                                        handleRatingFormSubmit={props.handleRatingFormSubmit}
+                                        setUserRating={props.setUserRating}
+                                        userRating={props.userRating}
+                                        setHover={props.setHover}
+                                        hover={props.hover}
+                                    />
+                                    <ReviewSaved
+                                        username={props.username}
+                                        mediaType={'Movie'}
+                                        media={media}
+                                        startReview={props.startReview}
+                                        selectedMediaReview={props.selectedMediaReview}
+                                        handleReviewFormSubmit={props.handleReviewFormSubmit}
+                                        setReviewInput={props.setReviewInput}
+                                    />
+
+                                    {media.comments && (<p>Comments:</p>)}
+                                    {media.comments.map(comment => {
+                                        return (
+                                            <p>{comment.commenterUsername}:{comment.content}</p>
+                                        )
+                                    })}
+
+                                    <Button className='btn-block btn-danger' onClick={() => props.handleDeleteMovie(media._id)}>
                                         Delete this Movie!
-                                </Button>
+                                    </Button>
                                 </Card.Body>
                             </Card>
-
                         );
                     })}
                 </CardColumns>
@@ -117,17 +260,65 @@ function SavedCards(props) {
                         return (
 
                             <Card key={game._id} border='dark'>
-                                {game.image ? <Card.Img className='mediaImage' src={game.image} alt={`The image for ${game.title}`} variant='top' /> : null}
+                                <div className='center-wrap'>
+                                    {game.image ? <Card.Img className='mediaImage' src={game.image} alt={`The image for ${game.title}`} variant='top' /> : null}
+                                </div>
                                 <Card.Body>
-                                    <Card.Title>{game.title}</Card.Title>
-                                    <p className='small'>Developer: {game.developer}</p>
+                                    <div className='center-wrap'>
+                                        <Card.Title>
+                                            <b>{game.title.toUpperCase()}</b>
+                                            <p className='by'>Developer: {game.developer}</p>
+                                        </Card.Title>
+                                    </div>
                                     <Card.Text>{game.description}</Card.Text>
+                                    <div className='center-wrap'>
+                                        <p className='ratingReviewHeading'>Your Rating</p>
+                                        <p className='rating'>
+                                            {[...Array(game.userRating)].map((star, i) => {
+                                                return (
+                                                    <label key={i}>
+                                                        <FontAwesomeIcon className='read-only-star' icon={faGamepad} color='black' size={'lg'} />
+                                                    </label>
+                                                )
+                                            })}
+                                        </p>
+                                        <p className='ratingReviewHeading'>Your Review</p>
+                                    </div>
+                                    <p>{game.userReview.length ? game.userReview : "What's good...and what's not? Write a review!"}</p>
+                                    <RateSaved
+                                        username={props.username}
+                                        mediaType={'Game'}
+                                        media={game}
+                                        startRating={props.startRating}
+                                        selectedMediaRating={props.selectedMediaRating}
+                                        handleRatingFormSubmit={props.handleRatingFormSubmit}
+                                        setUserRating={props.setUserRating}
+                                        userRating={props.userRating}
+                                        setHover={props.setHover}
+                                        hover={props.hover}
+                                    />
+                                    <ReviewSaved
+                                        username={props.username}
+                                        mediaType={'Game'}
+                                        media={game}
+                                        startReview={props.startReview}
+                                        selectedMediaReview={props.selectedMediaReview}
+                                        handleReviewFormSubmit={props.handleReviewFormSubmit}
+                                        setReviewInput={props.setReviewInput}
+                                    />
+
+                                    {game.comments && (<p>Comments:</p>)}
+                                    {game.comments.map(comment => {
+                                        return (
+                                            <p>{comment.commenterUsername}:{comment.content}</p>
+                                        )
+                                    })}
+
                                     <Button className='btn-block btn-danger' onClick={() => props.handleDeleteGame(game._id)}>
                                         Delete this Game!
                                     </Button>
                                 </Card.Body>
                             </Card>
-
                         );
                     })}
                 </CardColumns>
@@ -148,14 +339,18 @@ function SavedCards(props) {
                         return (
 
                             <Card key={friend._id} border='dark'>
-                                {friend.picture ? <Card.Img className='mediaImage' src={friend.picture} alt={friend.username} variant='top' /> : null}
-                                <Card.Body>
-                                    <Card.Title>{friend.username}</Card.Title>
-                                    <p className='small'>Email: {friend.email}</p>
-                                    <Button className='btn-block btn-danger' onClick={() => props.handleDeleteFriend(friend._id)}>
-                                        Remove Friend
+                                <div className='center-wrap'>
+                                    <Card.Img className='mediaImage' src={friend.picture} alt={friend.username} variant='top' />
+                                    <Card.Body>
+                                        <Card.Title>
+                                            <b>{friend.username.toUpperCase()}</b>
+                                            <p className='by'><b>email:</b> {friend.email}</p>
+                                        </Card.Title>
+                                        <Button className='btn-block btn-danger' onClick={() => props.handleDeleteFriend(friend._id)}>
+                                            Remove Friend
                                     </Button>
-                                </Card.Body>
+                                    </Card.Body>
+                                </div>
                             </Card>
 
                         );

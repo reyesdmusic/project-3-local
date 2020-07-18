@@ -58,17 +58,27 @@ function UploadPhoto({ handleModalClose }) {
             handleModalClose();
           })
           .catch((err) => console.log(err));
+
+         
       };
+
+      
 
   return (
     <div>
 
 
 
+<Form>
+  <Form.File 
+    id="custom-file"
+    label="CHOOSE PROFILE PIC"
+    onChange={uploadImage}
+    custom
+  />
 
-
-        <input type="file" name="file" placeholder="Upload a photo"
-        onChange={uploadImage}/>
+        {/* <input className="custom-file-input" type="file" name="file" placeholder="Upload a photo"
+        /> */}
        
      
         
@@ -85,7 +95,11 @@ function UploadPhoto({ handleModalClose }) {
        className='btn-block btn-info'
        onClick={() => handleSavePicture(image)}>Save Picture
      </Button>
+
+     </Form>
     </div>
+
+   
       
   )
 }

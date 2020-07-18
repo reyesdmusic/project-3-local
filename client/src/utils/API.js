@@ -109,9 +109,14 @@ export const saveMovie = function (movieData, token) {
   return axios.put('/api/users/movies', movieData, { headers: { authorization: `Bearer ${token}` } });
 };
 
-export const saveMovieReview = function (movieReview, token) {
-  console.log(movieReview, token);
-  return axios.put('/api/users/movie-review', movieReview, { headers: { authorization: `Bearer ${token}` } });
+export const saveUserReview = function (userReview, token) {
+  console.log(userReview, token);
+  return axios.put('/api/users/user-review', userReview, { headers: { authorization: `Bearer ${token}` } });
+};
+
+export const saveUserRating = function (userRating, token) {
+  console.log(userRating, token);
+  return axios.put('/api/users/user-rating', userRating, { headers: { authorization: `Bearer ${token}` } });
 };
 
 export const deleteMovie = function (movie_id, token) {
@@ -159,4 +164,24 @@ export const addNotification = function (notificationData, token) {
 export const deleteNotification = function (notificationId) {
   console.log('notification id', notificationId)
   return axios.delete(`/api/users/notifications/${notificationId}`, notificationId);
+};
+
+export const addComment = function (commentData, token) {
+  console.log("comment data:", commentData, "token:", token);
+
+  if (commentData.mediaType === "book") {
+  return axios.put(`/api/users/books/comments/${commentData.mediaId}`, commentData, { headers: { authorization: `Bearer ${token}` } });
+  }
+
+  if (commentData.mediaType === "movie") {
+  return axios.put(`/api/users/movies/comments/${commentData.mediaId}`, commentData, { headers: { authorization: `Bearer ${token}` } });
+  }
+
+  if (commentData.mediaType === "music") {
+  return axios.put(`/api/users/music/comments/${commentData.mediaId}`, commentData, { headers: { authorization: `Bearer ${token}` } });
+  }
+
+  if (commentData.mediaType === "game") {
+    return axios.put(`/api/users/games/comments/${commentData.mediaId}`, commentData, { headers: { authorization: `Bearer ${token}` } });
+    }
 };

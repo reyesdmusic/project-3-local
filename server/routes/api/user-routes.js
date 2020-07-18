@@ -15,12 +15,17 @@ const {
   deleteMusic,
   saveMovie,
   deleteMovie,
-  saveMovieReview,
   login,
   addBookLike,
   addMusicLike,
   addMovieLike,
   addGameLike,
+  addBookComment,
+  addMovieComment,
+  addMusicComment,
+  addGameComment,
+  saveUserReview,
+  saveUserRating,
   addNotification,
   deleteNotification
 } = require('../../controllers/user-controller');
@@ -42,7 +47,7 @@ router.route('/:id').get(getSingleUser);
 
 router.route('/find/:username').get(getSingleUser);
 
-router.route('/books/:id').delete(authMiddleware, deleteBook).put(addBookLike);
+router.route('/books/:id').delete(authMiddleware, deleteBook).put(addBookLike).put();
 
 router.route('/games').get(getAllUsers).post(createUser).put(authMiddleware, saveGame);
 
@@ -58,7 +63,9 @@ router.route('/picture').get(getAllUsers).put(authMiddleware, savePicture);
 
 router.route('/movies').get(getAllUsers).put(authMiddleware, saveMovie);
 
-router.route('/movie-review').get(getAllUsers).put(authMiddleware, saveMovieReview);
+router.route('/user-review').get(getAllUsers).put(authMiddleware, saveUserReview);
+
+router.route('/user-rating').get(getAllUsers).put(authMiddleware, saveUserRating);
 
 router.route('/likes').get(getAllUsers).put(authMiddleware, saveLike);
 
@@ -69,6 +76,17 @@ router.route('/friends/:id').delete(authMiddleware, deleteFriend);
 router.route('/notifications').put(addNotification);
 
 router.route('/notifications/:id').delete(deleteNotification);
+
+router.route('/books/comments/:id').put(addBookComment);
+
+router.route('/games/comments/:id').put(addGameComment);
+
+router.route('/music/comments/:id').put(addMusicComment);
+
+router.route('/movies/comments/:id').put(addMovieComment);
+
+
+
 
 
 module.exports = router;

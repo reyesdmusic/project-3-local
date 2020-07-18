@@ -1,5 +1,5 @@
 // import user model
-const { User, Book, Music, Movie, Game, Like, Notification } = require('../models');
+const { User, Book, Music, Movie, Game, Like, Notification, Comment } = require('../models');
 
 // import sign token function from auth
 const { signToken } = require('../utils/auth');
@@ -16,7 +16,7 @@ module.exports = {
     // console.log("params", params);
     const foundUser = await User.findOne({
       $or: [{ _id: user ? user._id : params.id }, { username: params.username }],
-    }).populate('savedGames').populate('savedBooks').populate('savedMusic').populate('savedMovies').populate('friends').populate('savedLikes').populate('notifications');
+    }).populate('savedGames').populate('savedBooks').populate('savedMusic').populate('savedMovies').populate('friends').populate('savedLikes').populate('notifications').populate({path: 'savedBooks', populate: {path: 'comments'}}).populate({path: 'savedMovies', populate: {path: 'comments'}}).populate({path: 'savedMusic', populate: {path: 'comments'}}).populate({path: 'savedGames', populate: {path: 'comments'}});
 
     if (!foundUser) {
       return res.status(400).json({ message: 'Cannot find a user with this id!' });
@@ -139,22 +139,89 @@ module.exports = {
     }
   },
 
-  async saveMovieReview({ body }, res) {
+  async saveUserReview({ body }, res) {
     // console.log('user: ', user);
     console.log('body: ', body);
     try {
-      const newMovieReview = await Movie.findOneAndUpdate(
-        { _id: body.id },
-        {
-          $set: {
-            movieReview: body.review,
-            userRating: body.userRating
-          }
-        },
-        { new: true, runValidators: true }
-      );
-      console.log('newMovieReview: ', newMovieReview);
-      return res.json(newMovieReview);
+      const model = body.type;
+      switch (model) {
+        case 'Movie':
+          const newMovieReview = await Movie.findOneAndUpdate(
+            { _id: body.id },
+            { $set: { userReview: body.review, } },
+            { new: true, runValidators: true }
+          );
+          console.log('newMovieReview: ', newMovieReview);
+          return res.json(newMovieReview);
+        case 'Book':
+          const newBookReview = await Book.findOneAndUpdate(
+            { _id: body.id },
+            { $set: { userReview: body.review, } },
+            { new: true, runValidators: true }
+          );
+          console.log('newBookReview: ', newBookReview);
+          return res.json(newBookReview);
+        case 'Music':
+          const newMusicReview = await Music.findOneAndUpdate(
+            { _id: body.id },
+            { $set: { userReview: body.review, } },
+            { new: true, runValidators: true }
+          );
+          console.log('newMusicReview: ', newMusicReview);
+          return res.json(newMusicReview);
+        default:
+          const newGameReview = await Game.findOneAndUpdate(
+            { _id: body.id },
+            { $set: { userReview: body.review, } },
+            { new: true, runValidators: true }
+          );
+          console.log('newGameReview: ', newGameReview);
+          return res.json(newGameReview);
+      }
+    } catch (err) {
+      console.log(err);
+      return res.status(400).json(err);
+    }
+  },
+
+  async saveUserRating({ body }, res) {
+    console.log('body: ', body);
+    try {
+      const model = body.type;
+      switch (model) {
+        case 'Movie':
+          const newMovieRating = await Movie.findOneAndUpdate(
+            { _id: body.id },
+            { $set: { userRating: body.userRating, } },
+            { new: true, runValidators: true }
+          );
+          console.log('newMovieRating: ', newMovieRating);
+          return res.json(newMovieRating);
+        case 'Book':
+          const newBookRating = await Book.findOneAndUpdate(
+            { _id: body.id },
+            { $set: { userRating: body.userRating, } },
+            { new: true, runValidators: true }
+          );
+          console.log('newBookRating: ', newBookRating);
+          return res.json(newBookRating);
+        case 'Music':
+          const newMusicRating = await Music.findOneAndUpdate(
+            { _id: body.id },
+            { $set: { userRating: body.userRating, } },
+            { new: true, runValidators: true }
+          );
+          console.log('newMusicRating: ', newMusicRating);
+          return res.json(newMusicRating);
+        default:
+          const newGameRating = await Game.findOneAndUpdate(
+            { _id: body.id },
+            { $set: { userRating: body.userRating, } },
+            { new: true, runValidators: true }
+          );
+          console.log('newGameRating: ', newGameRating);
+          return res.json(newGameRating);
+      }
     } catch (err) {
       console.log(err);
       return res.status(400).json(err);
@@ -380,11 +447,11 @@ module.exports = {
 
   },
 
-  async deleteNotification({params}, res) {
+  async deleteNotification({ params }, res) {
     console.log("delete notification params", params);
     try {
       const deletedNotification = await Notification.deleteOne(
-        { _id: params.id},
+        { _id: params.id },
         { new: true, runValidators: true }
       );
       return res.json(deletedNotification)
@@ -392,5 +459,78 @@ module.exports = {
       console.log(err);
       return res.status(400).json(err);
     }
+  },
+  async addMovieComment({ body }, res) {
+
+    try {
+      const newComment = await Comment.create(
+        { content: body.content, commenterUsername: body.commenterUsername }
+      );
+      const updatedMovie = await Movie.findOneAndUpdate(
+        { _id: body.mediaId },
+        { $addToSet: { comments: newComment._id } },
+        { new: true, runValidators: true }
+      );
+      return res.json(updatedMovie);
+  
+    } catch (err) {
+      console.log(err);
+      return res.status(400).json(err);
+    }
+  },
+  async addBookComment({ body }, res) {
+
+    try {
+      const newComment = await Comment.create(
+        { content: body.content, commenterUsername: body.commenterUsername }
+      );
+      const updatedBook = await Book.findOneAndUpdate(
+        { _id: body.mediaId },
+        { $addToSet: { comments: newComment._id } },
+        { new: true, runValidators: true }
+      );
+      return res.json(updatedBook);
+  
+    } catch (err) {
+      console.log(err);
+      return res.status(400).json(err);
+    }
+  },
+  async addMusicComment({ body }, res) {
+
+    try {
+      const newComment = await Comment.create(
+        { content: body.content, commenterUsername: body.commenterUsername }
+      );
+      const updatedMovie = await Music.findOneAndUpdate(
+        { _id: body.mediaId },
+        { $addToSet: { comments: newComment._id } },
+        { new: true, runValidators: true }
+      );
+      return res.json(updatedMovie);
+  
+    } catch (err) {
+      console.log(err);
+      return res.status(400).json(err);
+    }
+  },
+  async addGameComment({ body }, res) {
+
+    try {
+      const newComment = await Comment.create(
+        { content: body.content, commenterUsername: body.commenterUsername }
+      );
+      const updatedGame = await Game.findOneAndUpdate(
+        { _id: body.mediaId },
+        { $addToSet: { comments: newComment._id } },
+        { new: true, runValidators: true }
+      );
+      return res.json(updatedGame);
+  
+    } catch (err) {
+      console.log(err);
+      return res.status(400).json(err);
+    }
   }
 };
+
