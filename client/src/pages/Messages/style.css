@@ -1,0 +1,34 @@
+#messages-container {
+    margin-top: 150px;
+    border: 1px solid black;
+    padding: 20px;
+    height: 650px;
+    background: linear-gradient(412.9deg, rgb(243, 243, 243) 0%, rgb(253, 253, 253) 82.68%, rgba(235,235,235,1) 100%);
+}
+
+
+
+
+@media screen and (max-width: 991px) {
+     
+    #lg-screen-search {
+        
+      display: none !important;
+    }
+
+    #messages-container {
+
+      height: 780px;
+  }
+  
+}
+
+@media screen and (min-width: 991px) {
+     
+    #sm-screen-search {
+        
+      display: none !important;
+     
+    }
+  
+}

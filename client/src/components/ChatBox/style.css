@@ -1,0 +1,47 @@
+#chat-box-body {
+    border: 1px solid black !important;
+    height: 500px;
+    width: 100%; 
+    overflow: scroll;
+
+}
+
+#chat-message-row {
+    width: 100%;
+   
+}
+
+
+#this-user-message {
+   
+    float: right;
+    color: white;
+    padding: 8px;
+    background: linear-gradient(to bottom, #d400ff 0%, #4900d1 100%);
+    background-attachment: fixed;
+    border-radius: 15px;
+    border-bottom-right-radius: 2px;
+    margin: 10px;
+    margin-right: -20px;
+}
+
+#that-user-message {
+    
+    float: left;
+    color: black;
+    padding: 8px;
+    background: linear-gradient(to bottom, #d0ff00 0%, #88d100 100%);
+    background-attachment: fixed;
+    border-radius: 15px;
+    border-bottom-left-radius: 2px;
+    margin: 10px;
+}
+
+
+
+@media screen and (max-width: 991px) {
+
+    #chat-box-body {
+      height: 515px;
+  }
+}
