@@ -11,6 +11,11 @@
    
 }
 
+#no-chat-head {
+    font-size: 30px;
+    margin-left: -30px;
+}
+
 
 #this-user-message {
    
@@ -25,6 +30,26 @@
     margin-right: -20px;
 }
 
+#this-user-pic {
+   
+    float: right;
+    height: 25px;
+    width: 25px;
+
+    border-radius: 100px;
+    margin: 10px;
+    margin-right: -20px;
+}
+
+#this-user-time {
+   
+    float: right;
+    color: black;
+    background: none;
+    font-size: 10px;
+    margin-right: -20px;
+}
+
 #that-user-message {
     
     float: left;
@@ -35,6 +60,30 @@
     border-radius: 15px;
     border-bottom-left-radius: 2px;
     margin: 10px;
+}
+
+#that-user-pic {
+    
+    float: left;
+    height: 25px;
+    width: 25px;
+    margin-top: -5px;
+    margin-bottom: -5px; 
+    border-radius: 100px;
+    margin: 10px;
+}
+
+#that-user-time {
+    
+    float: left;
+    color: black;
+    background: none;
+    font-size: 10px;
+    margin-left: 10px;
+    margin-top: -5px;
+    margin-bottom: -5px;
+    
+    
 }
 
 

@@ -5,7 +5,7 @@ import { Button } from 'react-bootstrap';
 
 
 
-function MessageList({userList, cb}) {
+function MessageList({userList, getAllUserMessages, handleNewChatState }) {
 
   const [userListState, setUserListState] = useState([]);
   
@@ -14,32 +14,26 @@ function MessageList({userList, cb}) {
   setUserListState(userList);
   }, [userList]);
 
-
-  
-
     return (
       
       <div>
-         <Button id="all-messages-button" onClick={() => cb()}>ALL MESSAGES</Button>
+         <Button id="all-messages-button" onClick={() => getAllUserMessages()}>ALL MESSAGES</Button>
       <div id="message-list-div">
-       
-         
-          
-            
-       
        
         {userListState.map(user => {
               {
                 return (
                 //  <img src={message.picture}/>
 
-                <UserInfoLi user={user}/>
+                <UserInfoLi 
+                user={user}
+                handleNewChatState={handleNewChatState}
+                />
                 );
               }
            
             })}
-       
-        
+             
         {console.log("from message list component,", userListState)}
       </div>
       </div>

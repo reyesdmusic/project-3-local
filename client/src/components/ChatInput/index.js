@@ -4,13 +4,13 @@ import "./style.css";
 import { searchFriend } from '../../utils/API';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
+import UserInfoContext from '../../utils/UserInfoContext';
 
-function ChatInput({ cb }) {
+function ChatInput({ handleSendMessage, handleNewMessageState }) {
 
 
     const [chatInput, setChatInput] = useState('');
-  
-
+    const userData = useContext(UserInfoContext);
 
     // create method to search for users and set state on form submit
     const handleFormSubmit = (event) => {
@@ -22,13 +22,28 @@ function ChatInput({ cb }) {
         }
         let newMessage =
         {
-          id: "bb",
-          chatMessage: chatInput
+          senderPicture: userData.picture,
+          senderId: userData._id,
+          messageText: chatInput
         }
 
-        cb(newMessage);
+        handleSendMessage(newMessage); 
+
+        let newMessageObject =
+        {
+            senderId: userData._id,
+            senderName: userData.username,
+            senderPicture: userData.picture,
+            timeStamp: Date.now(),
+            createdAt: Date(),
+            messageText: chatInput
+
+
+        }
         
-            
+        handleNewMessageState(newMessageObject);
+
+        setChatInput("");
             
     }
 
@@ -54,6 +69,7 @@ function ChatInput({ cb }) {
                                 </Button>
                             </Col>
                         </Form.Row>
+          
                     </Form>
       
   

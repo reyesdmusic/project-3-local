@@ -5,7 +5,7 @@ import { searchFriend } from '../../utils/API';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
-function SearchFriends({ cb }) {
+function SearchFriends({ sendSearchedUserToList }) {
 
 
     const [searchInput, setSearchInput] = useState('');
@@ -24,7 +24,7 @@ function SearchFriends({ cb }) {
         searchFriend(searchInput)
             .then(user => {
 
-              cb(user.data)
+                sendSearchedUserToList(user.data)
             
             
           },

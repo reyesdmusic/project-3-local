@@ -4,13 +4,25 @@ import { Col, Row } from 'react-bootstrap';
 
 
 
-function UserInfoLi({ user }) {
+function UserInfoLi({ user, handleNewChatState }) {
 
     return (
 
       
     
-          <button id="li-button">
+          <button id="li-button" onClick={() => {handleNewChatState(
+              { 
+           
+                receiverId: user.id,
+                username: user.username
+            }
+                )
+                console.log({ 
+           
+                    receiverId: user.id,
+                    username: user.username
+                });
+                }}>
               
                 <Row id="table-row">
                     <Col xs={12} s={12} md={2} lg={2} id="picture-td"><img id="li-picture" src={user.picture} /></Col>

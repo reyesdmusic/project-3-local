@@ -4,56 +4,15 @@ import "./style.css";
 import { Col, Row } from 'react-bootstrap';
 import UserInfoContext from '../../utils/UserInfoContext';
 import ChatInput from '../ChatInput';
+import moment from 'moment';
 
-function ChatBox() {
+function ChatBox({ handleNewMessageState, newChatState, setIsPreviousChatState, setCurrentChatIdState }) {
 
   const userData = useContext(UserInfoContext);
   const [convoState, setConvoState] = useState([]);
+  
    
-  let myConvo = [
-    {
-      id: "aldkjfald",
-      chatMessage: "hey how's it going?"
-    },
-    {
-      id: "bb",
-      chatMessage: "pretty good, how are you"
-    },
-    {
-      id: "a8999999",
-      chatMessage: "I'm fine again"
-    },
-    
-    {
-      id: "bb",
-      chatMessage: "pretty good, how are you youyouyouyou pretty good, how are you youyouyouyoupretty good, how are you youyouyouyoupretty good, how are you youyouyouyoupretty good, how are you youyouyouyoupretty good, how are you youyouyouyoupretty good, how are you youyouyouyoupretty good, how are you youyouyouyoupretty good, how are you youyouyouyoupretty good, how are you youyouyouyoupretty good, how are you youyouyouyou"
-    },
-    {
-      id: "a8999999",
-      chatMessage: "I'm fine again"
-    },
-    {
-      id: "bb",
-      chatMessage: "pretty good, how are you"
-    },
-    {
-      id: "a8999999",
-      chatMessage: "I'm fine again"
-    },
-    {
-      id: "aere4545",
-      chatMessage: "oh you are?"
-    },
-    {
-      id: "bb",
-      chatMessage: "yeah life is good"
-    },
-    {
-      id: "90909gakjfhga",
-      chatMessage: "well that's great to hear"
-    }
-
-  ]
+  
   
     
   const messagesEndRef = useRef(null)
@@ -66,12 +25,12 @@ function ChatBox() {
 
   useEffect(() => {
 
-    setConvoState(myConvo);
+    setConvoState([]);
     
     scrollToBottom();
   
   
-  }, [userData]);
+  }, [userData.username]);
 
 
   useEffect(() => {
@@ -83,45 +42,147 @@ function ChatBox() {
   
   }, [convoState]);
 
+  useEffect(() => {
+    
+    let chatUser = [];
+    
+    userData.chats.map(chat => {
+
+      chat.users.map(user =>
+
+        chatUser.push(user)
+
+      )
+
+    })
+
+    {chatUser?.some((user) => user._id === newChatState.receiverId)
+      // ? setConvoState(myConvo) : 
+      ? renderPreviousChat() :
+      renderNoChatMessage()
+  }
+    
+    
+    
+
+  
+    scrollToBottom();
+  
+  
+  }, [newChatState]);
+
 
   const handleSendMessage = useCallback((message) => {
-    
+  
     setConvoState(convoState => [...convoState, message])
     scrollToBottom();
   });
 
-   
+
+  function renderPreviousChat() {
+
+    setIsPreviousChatState(true);
+    userData.chats.map(chat => {
+
+      chat.users.map(user => {
+        if (user._id === newChatState.receiverId){
+
+          setConvoState(chat.messages)
+          setCurrentChatIdState(chat._id)
+        }      
+      })
+
+    })
+  }
+  
+  function renderNoChatMessage() {
+
+    setIsPreviousChatState(false);
+    let noChatArray = [
+      { type: "no chat history" }
+    ]
+
+    setConvoState(noChatArray)
+  }
   
 
     return (
         <div>
         <div ref={messagesEndRef} id="chat-box-body">
-        {convoState.map((convo => {
-          
 
-          if (convo.id === "bb") {
+          
+        {convoState.map((convo => {
+
+
+          if (convo.type === "no chat history") {
+           return (    
+           <Row>
+            </Row>
+           )
+          }
+
+          if (convo.senderId === userData._id) {
             return (
+              <div>
+
               <Row id="chat-message-row">
                 <Col xs={6} sm={6} md={6} lg={6}></Col>
               <Col xs={6} sm={6} md={6} lg={6}>
-              <div id="this-user-message">
-                {convo.chatMessage}
-              </div>
+              <img id="this-user-pic" src={convo.senderPicture}/>
+              
               </Col>
               </Row>
+              <Row id="chat-message-row">
+                <Col xs={6} sm={6} md={6} lg={6}></Col>
+              <Col xs={6} sm={6} md={6} lg={6}>
+              <div id="this-user-time">{moment(convo.createdAt).calendar()}</div>
+          
+             
+              </Col>
+              </Row>
+              <Row id="chat-message-row">
+              <Col xs={6} sm={6} md={6} lg={6}></Col>
+                <Col xs={6} sm={6} md={6} lg={6}>
                
+                <div id="this-user-message">
+                
+                  {convo.messageText}
+                </div>
+               
+                </Col>
+                </Row>
+               </div>
             )
 
 
           }
           return (
+            <div>
+
             <Row id="chat-message-row">
             <Col xs={6} sm={6} md={6} lg={6}>
-            <div id="that-user-message">
-              {convo.chatMessage}
-            </div>
+            <img id="that-user-pic" src={convo.senderPicture}/>
+        
+            
             </Col>
             </Row>
+            <Row id="chat-message-row">
+            <Col xs={6} sm={6} md={6} lg={6}>
+            <div id="that-user-time">{moment(convo.createdAt).calendar()}</div>
+        
+            
+            </Col>
+            </Row>
+            <Row id="chat-message-row">
+            <Col xs={6} sm={6} md={6} lg={6}>
+     
+            <div id="that-user-message">
+              {convo.messageText}
+            </div>
+            
+            </Col>
+            </Row>
+            </div>
           )
 
 
@@ -130,7 +191,12 @@ function ChatBox() {
 
         
         </div>
-        <ChatInput cb={handleSendMessage}></ChatInput>
+        <ChatInput
+            
+            handleSendMessage={handleSendMessage}
+            handleNewMessageState={handleNewMessageState}
+            >
+        </ChatInput>
         </div>
 
     );
