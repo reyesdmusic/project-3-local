@@ -195,6 +195,7 @@ function ChatBox({ handleNewMessageState, newChatState, setIsPreviousChatState, 
             
             handleSendMessage={handleSendMessage}
             handleNewMessageState={handleNewMessageState}
+            newChatState={newChatState}
             >
         </ChatInput>
         </div>

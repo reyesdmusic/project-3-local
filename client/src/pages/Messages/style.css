@@ -8,7 +8,14 @@
 
 #chat-box-header {
   margin-top: -30px;
+  color: rgb(121, 38, 255) !important;
 }
+
+#chat-box-header-active {
+  margin-top: -30px;
+  color: #9df100 !important;
+}
+
 
 
 
@@ -21,13 +28,17 @@
 
     #messages-container {
 
-      height: 780px;
+      height: 880px;
   }
 
   #chat-box-header {
     margin-top: 0px;
+   
   }
   
+  #chat-box-header-active {
+    margin-top: 0px;
+  }
 }
 
 @media screen and (min-width: 991px) {
@@ -35,7 +46,9 @@
     #sm-screen-search {
         
       display: none !important;
+      
      
     }
+
   
 }

@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 import UserInfoContext from '../../utils/UserInfoContext';
 
-function ChatInput({ handleSendMessage, handleNewMessageState }) {
+function ChatInput({ handleSendMessage, handleNewMessageState, newChatState }) {
 
 
     const [chatInput, setChatInput] = useState('');
@@ -64,7 +64,7 @@ function ChatInput({ handleSendMessage, handleNewMessageState }) {
                                 />
                             </Col>
                             <Col xs={1} md={1} lg={1}>
-                                <Button id="search-icon-button" type='submit' variant='success' size='lg'>
+                                <Button id="search-icon-button" type='submit' variant='success' size='lg' disabled={!newChatState.username}>
                                     <FontAwesomeIcon  icon={faPaperPlane} size={'md'} />
                                 </Button>
                             </Col>

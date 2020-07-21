@@ -222,7 +222,7 @@ function genHexString(len) {
                     ></MessageList>
       </Col>
       <Col xs={9} s={9} md={9} lg={8}>
-      {newChatState.username ? <h4 id="chat-box-header"> MESSAGING {newChatState.username.toUpperCase()}</h4> : null}
+      {newChatState.username ? <h5 id="chat-box-header"> MESSAGING {newChatState.username.toUpperCase()}</h5> : <h5 id="chat-box-header-active">MUST SELECT FRIEND TO CHAT</h5>}
       <ChatBox handleNewMessageState ={handleNewMessageState} 
                setIsPreviousChatState={setIsPreviousChatState}
                setCurrentChatIdState={setCurrentChatIdState}

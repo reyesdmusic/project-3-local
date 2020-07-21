@@ -22,7 +22,7 @@
     float: right;
     color: white;
     padding: 8px;
-    background: linear-gradient(to bottom, #d400ff 0%, #4900d1 100%);
+    background: linear-gradient(to bottom, rgb(152, 87, 255) 0%, rgb(121, 38, 255) 100%);
     background-attachment: fixed;
     border-radius: 15px;
     border-bottom-right-radius: 2px;
